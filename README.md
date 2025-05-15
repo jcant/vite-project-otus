@@ -1,5 +1,12 @@
 # vite-project-otus
 
+## Project Clone
+
+```sh
+SSH: git clone git@github.com:jcant/vite-project-otus.git
+HTTPS: git clone https://github.com/jcant/vite-project-otus.git
+```
+
 ## Project Setup
 
 ```sh
