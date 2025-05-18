@@ -1,5 +1,5 @@
 <script setup>
-import { getUsersArray } from "./data/users";
+import { getUsersArray } from "../data/users";
 import UserItem from "./UserItem.vue";
 import { ref } from "vue";
 
