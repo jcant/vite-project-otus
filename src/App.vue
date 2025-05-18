@@ -34,8 +34,14 @@ function changeListVisibility() {
 </script>
 
 <template>
-  <button @click="changeListVisibility">Show/Hide LIST</button>
-  <button @click="changeAgeVisibility">Show/Hide AGE</button>
+  <div class="columns-2 gap-6">
+    <button class="m-3 border-b" @click="changeListVisibility">
+      Show/Hide LIST
+    </button>
+    <button class="m-3 border-b" @click="changeAgeVisibility">
+      Show/Hide AGE
+    </button>
+  </div>
   <UserItem
     v-if="isListVisible"
     v-for="user in users"
