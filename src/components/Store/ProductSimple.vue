@@ -1,9 +1,9 @@
 <script setup>
-const props = defineProps({ title: String, id: Number, isSelected: Boolean });
+const props = defineProps({ product: Object, isSelected: Boolean });
 const emit = defineEmits(["select-product"]);
 
 function selectProduct() {
-  emit("select-product", props.id);
+  emit("select-product", props.product.id);
 }
 </script>
 
@@ -13,7 +13,7 @@ function selectProduct() {
     :class="{ 'product-simple-selected': isSelected }"
     @click="selectProduct()"
   >
-    {{ title }}
+    {{ product.title }}
   </div>
 </template>
 

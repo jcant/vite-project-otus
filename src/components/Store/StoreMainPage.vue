@@ -1,10 +1,23 @@
 <script setup>
-import { ref } from "vue";
+import { onBeforeMount, ref } from "vue";
 import ProductDetails from "./ProductDetails.vue";
 import ProductsList from "./ProductsList.vue";
-import { getProductsJSON } from "../data/products";
+import { getProductsJSON } from "../data/products_local";
 
-var selectedProduct = ref(getProductsJSON()[0]);
+// const products = reactive(getProductsJSON());
+const products = ref(null);
+const selectedProduct = ref(null);
+
+onBeforeMount(() => prepareProductsData());
+
+function prepareProductsData() {
+  fetch("https://fakestoreapi.com/products")
+    .then((response) => response.json())
+    .then((data) => {
+      products.value = data;
+      selectProduct.value = data[0];
+    });
+}
 
 function selectProduct(id) {
   selectedProduct.value = getProductsJSON().find((product) => product.id == id);
@@ -18,6 +31,7 @@ function selectProduct(id) {
         <ProductsList
           @select-product="selectProduct($event)"
           :title="'Products List'"
+          :products="products"
         />
       </div>
     </div>

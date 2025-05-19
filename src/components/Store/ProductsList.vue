@@ -1,10 +1,8 @@
 <script setup>
-import { reactive, ref } from "vue";
-import { getProductsJSON } from "../data/products";
+import { ref } from "vue";
 import ProductSimple from "./ProductSimple.vue";
 
-const products = reactive(getProductsJSON());
-const props = defineProps({ title: String });
+const props = defineProps({ title: String, products: Object });
 const selectedId = ref(0);
 const emit = defineEmits(["select-product"]);
 
@@ -19,8 +17,7 @@ function selectProduct(id) {
   <ProductSimple
     v-for="product in products"
     :key="product.id"
-    :title="product.title"
-    :id="product.id"
+    :product="product"
     :isSelected="product.id == selectedId"
     @select-product="selectProduct($event)"
   />
