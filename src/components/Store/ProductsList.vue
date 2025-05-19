@@ -13,14 +13,16 @@ function selectProduct(id) {
 </script>
 
 <template>
-  <div class="p-2 m-1 font-bold bg-amber-300 text-center">{{ title }}</div>
-  <ProductSimple
-    v-for="product in products"
-    :key="product.id"
-    :product="product"
-    :isSelected="product.id == selectedId"
-    @select-product="selectProduct($event)"
-  />
+  <div class="overflow-auto h-screen">
+    <div class="p-2 m-1 font-bold bg-amber-300 text-center">{{ title }}</div>
+    <ProductSimple
+      v-for="product in products"
+      :key="product.id"
+      :product="product"
+      :isSelected="product.id == selectedId"
+      @select-product="selectProduct($event)"
+    />
+  </div>
 </template>
 
 <style></style>

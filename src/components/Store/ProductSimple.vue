@@ -8,22 +8,27 @@ function selectProduct() {
 </script>
 
 <template>
-  <div
-    class="product-simple"
-    :class="{ 'product-simple-selected': isSelected }"
-    @click="selectProduct()"
-  >
-    {{ product.title }}
+  <div class="shadow-xl m-6 text-center items-center">
+    <div
+      class="product-simple"
+      :class="{ 'product-simple-selected': isSelected }"
+      @click="selectProduct()"
+    >
+      <img
+        class="h-26 w-26 object-contain m-auto"
+        :src="product?.image"
+        alt="product photo"
+      />
+      Price: {{ product.price }}
+    </div>
   </div>
 </template>
 
 <style scoped>
 .product-simple {
-  padding: 1px;
-  margin: 4px;
-  border: 1px solid rgb(191, 150, 0);
+  padding: 6px;
+  margin: 0px auto;
   border-radius: 4px;
-  background: rgb(240, 214, 141);
   cursor: pointer;
   overflow: hidden;
   white-space: nowrap;
@@ -31,11 +36,10 @@ function selectProduct() {
 }
 
 .product-simple:hover {
-  background: rgb(242, 198, 76);
+  border: 1px solid rgb(255, 196, 68);
 }
 
 .product-simple-selected {
-  background: rgb(241, 181, 13);
-  border: 1px solid rgb(99, 78, 2);
+  border: 1px solid rgb(190, 190, 190);
 }
 </style>
