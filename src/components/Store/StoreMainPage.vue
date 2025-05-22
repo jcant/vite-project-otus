@@ -20,7 +20,7 @@ function prepareProductsData() {
 }
 
 function selectProduct(id) {
-  selectedProduct.value = getProductsJSON().find((product) => product.id == id);
+  selectedProduct.value = products.value.find((product) => product.id == id);
 }
 </script>
 
