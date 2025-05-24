@@ -2,10 +2,10 @@
 import { onBeforeMount, ref } from "vue";
 import ProductDetails from "./ProductDetails.vue";
 import ProductsList from "./ProductsList.vue";
-import { getProductsJSON } from "../data/products_local";
+import StoreHeader from "./StoreHeader.vue";
 
-// const products = reactive(getProductsJSON());
-const products = ref(null);
+const allProducts = ref(null);
+const filteredProducts = ref(null);
 const selectedProduct = ref(null);
 
 onBeforeMount(() => prepareProductsData());
@@ -14,24 +14,41 @@ function prepareProductsData() {
   fetch("https://fakestoreapi.com/products")
     .then((response) => response.json())
     .then((data) => {
-      products.value = data;
-      selectProduct.value = data[0];
+      allProducts.value = data;
+      filteredProducts.value = data;
+      selectedProduct.value = data[0];
     });
 }
 
 function selectProduct(id) {
-  selectedProduct.value = products.value.find((product) => product.id == id);
+  selectedProduct.value = filteredProducts.value.find(
+    (product) => product.id == id
+  );
+}
+
+function filterProducts(receivedFilteredProducts) {
+  filteredProducts.value = receivedFilteredProducts;
+  selectedProduct.value = receivedFilteredProducts[0];
+}
+
+function clearFilter() {
+  filteredProducts.value = allProducts.value;
 }
 </script>
 
 <template>
+  <StoreHeader
+    :products="filteredProducts"
+    @filter-products="filterProducts($event)"
+    @clear-filter="clearFilter()"
+  />
   <div class="grid grid-cols-[30%_70%]">
     <div class="place-items-center">
       <div class="w-10/12">
         <ProductsList
           @select-product="selectProduct($event)"
           :title="'Products List'"
-          :products="products"
+          :products="filteredProducts"
         />
       </div>
     </div>
