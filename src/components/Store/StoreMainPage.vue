@@ -3,6 +3,7 @@ import { onBeforeMount, ref } from "vue";
 import ProductDetails from "./ProductDetails.vue";
 import ProductsList from "./ProductsList.vue";
 import StoreHeader from "./StoreHeader.vue";
+import axios from "axios";
 
 const allProducts = ref(null);
 const filteredProducts = ref(null);
@@ -11,13 +12,11 @@ const selectedProduct = ref(null);
 onBeforeMount(() => prepareProductsData());
 
 function prepareProductsData() {
-  fetch("https://fakestoreapi.com/products")
-    .then((response) => response.json())
-    .then((data) => {
-      allProducts.value = data;
-      filteredProducts.value = data;
-      selectedProduct.value = data[0];
-    });
+  axios.get("https://fakestoreapi.com/products").then((response) => {
+    allProducts.value = response.data;
+    filteredProducts.value = response.data;
+    selectedProduct.value = response.data[0];
+  });
 }
 
 function selectProduct(id) {
@@ -38,7 +37,7 @@ function clearFilter() {
 
 <template>
   <StoreHeader
-    :products="filteredProducts"
+    :products="allProducts"
     @filter-products="filterProducts($event)"
     @clear-filter="clearFilter()"
   />
@@ -53,7 +52,10 @@ function clearFilter() {
       </div>
     </div>
     <div>
-      <ProductDetails :product="selectedProduct" />
+      <ProductDetails v-if="selectedProduct" :product="selectedProduct" />
+      <div v-else class="text-2xl text-center pt-10">
+        Please select a product
+      </div>
     </div>
   </div>
 </template>
