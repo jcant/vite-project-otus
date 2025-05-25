@@ -1,26 +1,37 @@
 <script setup>
+import { onMounted } from "vue";
 import axios from "axios";
 import { useForm } from "vee-validate";
 import * as yup from "yup";
 
 const emit = defineEmits(["cancel-order", "success-order"]);
+const props = defineProps(["product"]);
 
 const schema = yup.object({
+  productField: yup.number(),
   email: yup.string().required().email(),
   firstName: yup.string().required(),
   lastName: yup.string().required(),
   birthday: yup.date().required(),
   city: yup.string().required(),
   street: yup.string().required(),
-  houseNumber: yup.number().required(),
-  cardNumber: yup.number().required(),
-  rulesConfirm: yup.string().required(),
+  houseNumber: yup.number().positive().required(),
+  cardNumber: yup.number().positive().required(),
+  rulesConfirm: yup
+    .boolean()
+    .required()
+    .oneOf([true], "Accept rules is required"),
 });
 
-const { values, errors, meta, defineField } = useForm({
+onMounted(() => {
+  productField.value = props.product.id;
+});
+
+const { values, fields, errors, meta, defineField } = useForm({
   validationSchema: schema,
 });
 
+const [productField, productFieldAttrs] = defineField("productField");
 const [email, emailAttrs] = defineField("email");
 const [firstName, firstNameAttrs] = defineField("firstName");
 const [lastName, lastNameAttrs] = defineField("lastName");
@@ -32,10 +43,9 @@ const [cardNumber, cardNumberAttrs] = defineField("cardNumber");
 const [rulesConfirm, rulesConfirmAttrs] = defineField("rulesConfirm");
 
 function trySubmit() {
-  console.log("on try submit: ", meta.value.valid);
+  console.log("try submit: ", values, meta);
   if (meta.value.valid) {
     axios.post("https://httpbin.org/post", values).then(function (response) {
-      console.log("response fron eho-server: ", response);
       emit("success-order");
     });
   }
@@ -43,6 +53,14 @@ function trySubmit() {
 </script>
 
 <template>
+  <!-- <form @submit.prevent="handleSubmit"> -->
+  <input
+    style="display: none"
+    type="text"
+    v-model="productField"
+    v-bind="productFieldAttrs"
+    value="100"
+  />
   <label>Email</label>
   <input
     class="order-input"
@@ -71,7 +89,7 @@ function trySubmit() {
   <input
     class="order-input"
     :class="{ 'order-input-error': errors.birthday }"
-    type="text"
+    type="date"
     v-model="birthday"
     v-bind="birthdayAttrs"
   />
@@ -103,15 +121,21 @@ function trySubmit() {
   <input
     class="order-input"
     :class="{ 'order-input-error': errors.cardNumber }"
-    type="text"
+    type="tel"
+    inputmode="numeric"
+    pattern="[0-9\s]{13,19}"
+    autocomplete="cc-number"
+    maxlength="19"
+    placeholder="xxxx xxxx xxxx xxxx"
+    required
     v-model="cardNumber"
     v-bind="cardNumberAttrs"
   />
   <label>Rules Confirmation</label>
   <input
-    class="order-input"
+    class="order-input size-4"
     :class="{ 'order-input-error': errors.rulesConfirm }"
-    type="text"
+    type="checkbox"
     v-model="rulesConfirm"
     v-bind="rulesConfirmAttrs"
   />
@@ -124,11 +148,13 @@ function trySubmit() {
   <button
     class="text-3xl bg-amber-500 pl-3 pr-3 p-1 m-2 rounded-md border-1 border-amber-700 cursor-pointer"
     @click="trySubmit"
+    :disabled="!meta.valid"
+    :class="{ 'button-disabled': !meta.valid }"
   >
     SEND
   </button>
-  <pre>values: {{ values }}</pre>
-  <pre>errors: {{ errors }}</pre>
+  <!-- </form> -->
+  <div class="h-20"></div>
 </template>
 
 <style scoped>
@@ -144,5 +170,8 @@ function trySubmit() {
 .order-input-error {
   border: 1px solid red;
   background: rgb(255, 220, 203);
+}
+.button-disabled {
+  background: rgb(200, 200, 200);
 }
 </style>

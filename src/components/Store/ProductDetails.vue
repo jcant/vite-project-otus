@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import ProductOrder from "./ProductOrder.vue";
 
 const props = defineProps({ product: Object });
@@ -18,7 +18,16 @@ function onCancelOrder() {
 function onSuccessOrder() {
   isOrdering.value = false;
   isOrderSuccessed.value = true;
+  setTimeout(() => {
+    isOrderSuccessed.value = false;
+  }, 3000);
 }
+watch(
+  () => props.product,
+  (newVal, oldVal) => {
+    isOrdering.value = false;
+  }
+);
 </script>
 
 <template>
@@ -62,6 +71,7 @@ function onSuccessOrder() {
   </div>
   <ProductOrder
     v-if="isOrdering"
+    :product="product"
     @cancel-order="onCancelOrder"
     @success-order="onSuccessOrder"
   />

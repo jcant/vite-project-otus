@@ -3,6 +3,7 @@ import { ref } from "vue";
 import OrderInputs from "./OrderInputs.vue";
 
 const emit = defineEmits(["cancel-order", "success-order"]);
+const props = defineProps(["product"]);
 
 const firstName = ref();
 const lastName = ref();
@@ -17,6 +18,7 @@ const rulesConfirm = ref(false);
 <template>
   <div class="mt-6">
     <OrderInputs
+      :product="product"
       @cancel-order="$emit('cancel-order')"
       @success-order="$emit('success-order')"
     />
