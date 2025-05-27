@@ -1,11 +1,14 @@
 <script setup>
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import axios from "axios";
 import { useForm } from "vee-validate";
 import * as yup from "yup";
+import router from "../../../router";
 
-const emit = defineEmits(["cancel-order", "success-order"]);
-const props = defineProps(["product"]);
+// const emit = defineEmits(["cancel-order", "success-order"]);
+const props = defineProps(["id"]);
+const isOrderSuccessed = ref(false);
+const isOrderCanceled = ref(false);
 
 const schema = yup.object({
   productField: yup.number(),
@@ -24,7 +27,7 @@ const schema = yup.object({
 });
 
 onMounted(() => {
-  productField.value = props.product.id;
+  productField.value = props.id;
 });
 
 const { values, fields, errors, meta, defineField } = useForm({
@@ -42,13 +45,26 @@ const [houseNumber, houseNumberAttrs] = defineField("houseNumber");
 const [cardNumber, cardNumberAttrs] = defineField("cardNumber");
 const [rulesConfirm, rulesConfirmAttrs] = defineField("rulesConfirm");
 
-function trySubmit() {
+function Submit() {
   console.log("try submit: ", values, meta);
   if (meta.value.valid) {
-    axios.post("https://httpbin.org/post", values).then(function (response) {
-      emit("success-order");
+    axios.post("https://httpbin.org/post", values).then(
+      function (response) {
+        isOrderSuccessed.value = true;
+        setTimeout(() => {
+          isOrderSuccessed.value = false;
+          router.push('/');
+        }, 3000);
     });
   }
+}
+
+function Cancel() {
+  isOrderCanceled.value = true;
+  setTimeout(() => {
+    isOrderCanceled.value = false;
+          router.push('/');
+        }, 3000);
 }
 </script>
 
@@ -141,19 +157,21 @@ function trySubmit() {
   />
   <button
     class="text-3xl bg-amber-200 pl-3 pr-3 p-1 m-2 rounded-md border-1 border-amber-700 cursor-pointer"
-    @click="$emit('cancel-order')"
+    @click="Cancel"
   >
     CANCEL
   </button>
   <button
     class="text-3xl bg-amber-500 pl-3 pr-3 p-1 m-2 rounded-md border-1 border-amber-700 cursor-pointer"
-    @click="trySubmit"
+    @click="Submit"
     :disabled="!meta.valid"
     :class="{ 'button-disabled': !meta.valid }"
   >
-    SEND
+    CONFIRM ORDER
   </button>
   <!-- </form> -->
+   <div v-if="isOrderSuccessed"> ORDER SUCCESSED!! </div>
+   <div v-if="isOrderCanceled"> ORDER CANCELED!! </div>
   <div class="h-20"></div>
 </template>
 

@@ -1,20 +1,13 @@
 <script setup>
-const props = defineProps({ product: Object, isSelected: Boolean });
-const emit = defineEmits(["select-product"]);
 
-function selectProduct() {
-  emit("select-product", props.product.id);
-}
+const props = defineProps(['product']);
+
 </script>
 
 <template>
 <router-link :to="'/product/' + product.id">
   <div class="shadow-xl m-6 text-center items-center">
-    <div
-      class="product-simple"
-      :class="{ 'product-simple-selected': isSelected }"
-      @click="selectProduct()"
-    >
+    <div class="product-simple">
       <img
         class="h-26 w-26 object-contain m-auto"
         :src="product?.image"

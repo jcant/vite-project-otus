@@ -21,7 +21,7 @@ export const appRoutes = [
     component: null,
   },
   {
-    path: "/checkout",
+    path: "/checkout/{id}",
     name: ROUTE_NAMES.CHECKOUT,
     component: ProductOrder,
   },

@@ -1,28 +1,21 @@
 <script setup>
 import { ref } from "vue";
 import SearchInput from "./SearchInput.vue";
-
-const emit = defineEmits(["filter-products", "clear-filter"]);
-const props = defineProps(["products"]);
+import { saveToStorage } from "../../data/storage.js";
 
 const filterValue = ref("");
 const isFiltered = ref(false);
-const filteredProducts = ref(props.products);
 
 function updateModel(filterString) {
-  filteredProducts.value = props.products.filter(
-    (product) =>
-      product.price == filterString ||
-      product.title.toLowerCase().indexOf(filterString.toLowerCase()) !== -1
-  );
-  isFiltered.value = true;
-  emit("filter-products", filteredProducts.value);
+  saveToStorage("currentProductFilter", filterString);
+  if (filterString == "") {
+    isFiltered.value = false;
+  }
 }
 
 function clearFilter() {
-  filterValue.value = "";
+  saveToStorage("currentProductFilter", "");
   isFiltered.value = false;
-  emit("clear-filter");
 }
 </script>
 
