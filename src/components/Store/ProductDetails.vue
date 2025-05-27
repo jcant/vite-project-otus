@@ -1,6 +1,6 @@
 <script setup>
 import { ref, watch } from "vue";
-import ProductOrder from "./ProductOrder.vue";
+import ProductOrder from "../order/ProductOrder.vue";
 
 const props = defineProps({ product: Object });
 const isOrdering = ref(false);

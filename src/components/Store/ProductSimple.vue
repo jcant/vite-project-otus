@@ -8,6 +8,7 @@ function selectProduct() {
 </script>
 
 <template>
+<router-link :to="'/product/' + product.id">
   <div class="shadow-xl m-6 text-center items-center">
     <div
       class="product-simple"
@@ -22,6 +23,7 @@ function selectProduct() {
       Price: {{ product.price }}
     </div>
   </div>
+  </router-link>
 </template>
 
 <style scoped>

@@ -1,9 +1,14 @@
 <script setup>
-import StoreMainPage from "./components/Store/StoreMainPage.vue";
+import StoreHeader from "@/components/store/StoreHeader.vue";
 </script>
 
 <template>
-  <StoreMainPage />
+  <StoreHeader
+    :products="allProducts"
+    @filter-products="filterProducts($event)"
+    @clear-filter="clearFilter()"
+  />
+  <router-view></router-view>
 </template>
 
 <style scoped></style>

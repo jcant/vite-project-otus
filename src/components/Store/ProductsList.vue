@@ -1,15 +1,46 @@
 <script setup>
 import { ref } from "vue";
 import ProductSimple from "./ProductSimple.vue";
+import { onBeforeMount, ref } from "vue";
+import axios from "axios";
 
-const props = defineProps({ title: String, products: Object });
+const props = defineProps(['title']);
 const selectedId = ref(0);
 const emit = defineEmits(["select-product"]);
 
-function selectProduct(id) {
-  selectedId.value = id;
-  emit("select-product", id);
+const allProducts = ref(null);
+const filteredProducts = ref(null);
+const selectedProduct = ref(null);
+
+onBeforeMount(() => prepareProductsData());
+
+function prepareProductsData() {
+  axios.get("https://fakestoreapi.com/products").then((response) => {
+    allProducts.value = response.data;
+    filteredProducts.value = response.data;
+    selectedProduct.value = response.data[0];
+  });
 }
+
+function selectProduct(id) {
+  selectedProduct.value = filteredProducts.value.find(
+    (product) => product.id == id
+  );
+}
+
+function filterProducts(receivedFilteredProducts) {
+  filteredProducts.value = receivedFilteredProducts;
+  selectedProduct.value = receivedFilteredProducts[0];
+}
+
+function clearFilter() {
+  filteredProducts.value = allProducts.value;
+}
+
+// function selectProduct(id) {
+//   selectedId.value = id;
+//   emit("select-product", id);
+// }
 </script>
 
 <template>
