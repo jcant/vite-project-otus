@@ -3,12 +3,10 @@ import { onMounted, ref } from "vue";
 import axios from "axios";
 import { useForm } from "vee-validate";
 import * as yup from "yup";
-import router from "../../../router";
+// import { route } from "vue-route";
 
-// const emit = defineEmits(["cancel-order", "success-order"]);
 const props = defineProps(["id"]);
-const isOrderSuccessed = ref(false);
-const isOrderCanceled = ref(false);
+// const route = useRoute();
 
 const schema = yup.object({
   productField: yup.number(),
@@ -48,13 +46,12 @@ const [rulesConfirm, rulesConfirmAttrs] = defineField("rulesConfirm");
 function Submit() {
   console.log("try submit: ", values, meta);
   if (meta.value.valid) {
-    axios.post("https://httpbin.org/post", values).then(
-      function (response) {
-        isOrderSuccessed.value = true;
-        setTimeout(() => {
-          isOrderSuccessed.value = false;
-          router.push('/');
-        }, 3000);
+    axios.post("https://httpbin.org/post", values).then(function (response) {
+      isOrderSuccessed.value = true;
+      setTimeout(() => {
+        isOrderSuccessed.value = false;
+        route.push("/");
+      }, 3000);
     });
   }
 }
@@ -63,13 +60,12 @@ function Cancel() {
   isOrderCanceled.value = true;
   setTimeout(() => {
     isOrderCanceled.value = false;
-          router.push('/');
-        }, 3000);
+    route.push("/");
+  }, 3000);
 }
 </script>
 
 <template>
-  <!-- <form @submit.prevent="handleSubmit"> -->
   <input
     style="display: none"
     type="text"
@@ -169,10 +165,6 @@ function Cancel() {
   >
     CONFIRM ORDER
   </button>
-  <!-- </form> -->
-   <div v-if="isOrderSuccessed"> ORDER SUCCESSED!! </div>
-   <div v-if="isOrderCanceled"> ORDER CANCELED!! </div>
-  <div class="h-20"></div>
 </template>
 
 <style scoped>

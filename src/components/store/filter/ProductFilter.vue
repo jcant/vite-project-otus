@@ -1,12 +1,13 @@
 <script setup>
 import { ref } from "vue";
 import SearchInput from "./SearchInput.vue";
-import { saveToStorage } from "../../data/storage.js";
+import { saveToStorage } from "@/components/data/storage.js";
 
 const filterValue = ref("");
 const isFiltered = ref(false);
 
 function updateModel(filterString) {
+  console.log("in product filter updateModel(): ", filterString);
   saveToStorage("currentProductFilter", filterString);
   if (filterString == "") {
     isFiltered.value = false;
@@ -33,7 +34,7 @@ function clearFilter() {
         filterValue
       }}</span
       ><img
-        src="../../assets/close.png"
+        src="@/assets/close.png"
         class="w-4 h-4 ml-1"
         @click="clearFilter"
       />

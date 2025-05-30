@@ -12,7 +12,7 @@ const inputValue = defineModel("inputValue");
         class="border border-amber-800 rounded-2xl pl-2 pr-2 p-1"
         v-model.lazy.trim="inputValue"
       />
-      <img src="../../assets/search.png" class="w-6 h-6 ml-2" />
+      <img src="@/assets/search.png" class="w-6 h-6 ml-2" />
     </div>
   </div>
 </template>

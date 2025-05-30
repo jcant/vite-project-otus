@@ -1,8 +1,8 @@
 function saveToStorage(key, value) {
-  let stringValue = "";
-  if (typeof value == "object") {
-    stringValue = JSON.stringify(value);
-  }
+  let stringValue = JSON.stringify(value);
+  // if (typeof value == "object") {
+    // stringValue = JSON.stringify(value);
+  // } else
   localStorage.setItem(key, stringValue);
 }
 

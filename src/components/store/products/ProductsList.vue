@@ -1,11 +1,11 @@
 <script setup>
-import { ref } from "vue";
-import ProductSimple from "./ProductSimple.vue";
+import ProductSimple from "@/components/store/products/ProductSimple.vue";
 import { onBeforeMount, ref } from "vue";
+import { getFromStorage } from "@/components/data/storage";
+// import { getProductsJSON } from "@/components/data/products_local.js"
 import axios from "axios";
-import { getFromStorage } from "../../data/storage";
 
-const props = defineProps(['title']);
+const props = defineProps(["title"]);
 
 const allProducts = ref(null);
 const filteredProducts = ref(null);
@@ -18,6 +18,11 @@ function prepareProductsData() {
     filteredProducts.value = response.data;
   });
 }
+
+// function prepareProductsData() {
+//   allProducts.value = getProductsJSON();
+//   filteredProducts.value = getProductsJSON();
+// }
 
 //callback from localstorage change...
 function onLocalStorageChange(key) {
@@ -39,16 +44,14 @@ function filterProducts(currentFilter) {
   );
 }
 
-
 function clearFilter() {
   filteredProducts.value = allProducts.value;
 }
-
 </script>
 
 <template>
-  <div class="overflow-auto h-screen">
-    <div class="p-2 m-1 font-bold bg-amber-300 text-center">{{ title }}</div>
+  <div class="p-2 m-1 font-bold bg-amber-300 text-center">{{ title }}</div>
+  <div class="flex flex-wrap">
     <ProductSimple
       v-for="product in filteredProducts"
       :key="product.id"

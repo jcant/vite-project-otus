@@ -1,21 +1,23 @@
 <script setup>
+import { useRoute } from "vue-router";
+import { ROUTE_NAMES } from "@/router/router_names.js";
 
-const props = defineProps(['product']);
-
+const route = useRoute();
+const props = defineProps(["product"]);
 </script>
 
 <template>
-<router-link :to="'/product/' + product.id">
-  <div class="shadow-xl m-6 text-center items-center">
-    <div class="product-simple">
-      <img
-        class="h-26 w-26 object-contain m-auto"
-        :src="product?.image"
-        alt="product photo"
-      />
-      Price: {{ product.price }}
+  <router-link :to="'/product/' + product.id">
+    <div class="shadow-xl m-6 text-center items-center">
+      <div class="product-simple">
+        <img
+          class="h-26 w-26 object-contain m-auto"
+          :src="product?.image"
+          alt="product photo"
+        />
+        Price: {{ product.price }}
+      </div>
     </div>
-  </div>
   </router-link>
 </template>
 
@@ -28,6 +30,7 @@ const props = defineProps(['product']);
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  border: 1px solid rgb(255, 255, 255);
 }
 
 .product-simple:hover {

@@ -1,42 +1,20 @@
 <script setup>
-import { ref, watch } from "vue";
-import ProductOrder from "../order/ProductOrder.vue";
+import { ref, onBeforeMount } from "vue";
+import { useRoute } from "vue-router";
+import axios from "axios";
 
-const props = defineProps(['id']);
 const product = ref(null);
+const route = useRoute();
 
 onBeforeMount(() => prepareProductsData());
 
 function prepareProductsData() {
-  axios.get("https://fakestoreapi.com/products/{{$product.id}}").then((response) => {
-    product.value = response.data;
-  });
+  axios
+    .get(`https://fakestoreapi.com/products/${route.params.id}`)
+    .then((response) => {
+      product.value = response.data;
+    });
 }
-// const isOrdering = ref(false);
-// const isOrderSuccessed = ref(false);
-
-// function onOrder() {
-//   isOrdering.value = true;
-//   isOrderSuccessed.value = false;
-// }
-
-// function onCancelOrder() {
-//   isOrdering.value = false;
-// }
-
-// function onSuccessOrder() {
-//   isOrdering.value = false;
-//   isOrderSuccessed.value = true;
-//   setTimeout(() => {
-//     isOrderSuccessed.value = false;
-//   }, 3000);
-// }
-// watch(
-//   () => props.product,
-//   (newVal, oldVal) => {
-//     isOrdering.value = false;
-//   }
-// );
 </script>
 
 <template>
@@ -70,7 +48,7 @@ function prepareProductsData() {
       <span>Rate: {{ product?.rating.rate }}</span
       ><span> Count: {{ product?.rating.count }}</span>
     </div>
-    <router-link :to="'/checkout/' + product.id">
+    <router-link :to="'/checkout/' + product?.id">
       <button
         class="text-3xl bg-amber-500 pl-3 pr-3 p-1 m-2 rounded-md border-1 border-amber-700 cursor-pointer"
       >
@@ -78,6 +56,7 @@ function prepareProductsData() {
       </button>
     </router-link>
   </div>
+  <router-view></router-view>
 </template>
 
 <style scoped></style>
