@@ -1,11 +1,15 @@
 <script setup>
 import ProductSimple from "@/components/store/products/ProductSimple.vue";
 import { onBeforeMount, ref } from "vue";
-import { getFromStorage } from "@/components/data/storage";
+import { useFilterStore } from "@/states/FilterState.js";
+import { storeToRefs } from "pinia";
 // import { getProductsJSON } from "@/components/data/products_local.js"
 import axios from "axios";
 
 const props = defineProps(["title"]);
+
+const filterStore = useFilterStore();
+const { filter, isFiltered } = storeToRefs(filterStore);
 
 const allProducts = ref(null);
 const filteredProducts = ref(null);
@@ -16,6 +20,9 @@ function prepareProductsData() {
   axios.get("https://fakestoreapi.com/products").then((response) => {
     allProducts.value = response.data;
     filteredProducts.value = response.data;
+    if (isFiltered.value) {
+      filterProducts(filter.value);
+    }
   });
 }
 
@@ -24,20 +31,16 @@ function prepareProductsData() {
 //   filteredProducts.value = getProductsJSON();
 // }
 
-//callback from localstorage change...
-function onLocalStorageChange(key) {
-  if (key == "currentProductFilter") {
-    currentFilter = getFromStorage(key);
-    if (currentFilter == "") {
-      clearFilter();
-    } else {
-      filterProducts(currentFilter);
-    }
+filterStore.$subscribe((mutation, state) => {
+  if (isFiltered.value) {
+    filterProducts(filter.value);
+  } else {
+    clearFilter();
   }
-}
+});
 
 function filterProducts(currentFilter) {
-  filteredProducts.value = allProducts.filter(
+  filteredProducts.value = allProducts.value.filter(
     (product) =>
       product.price == currentFilter ||
       product.title.toLowerCase().indexOf(currentFilter.toLowerCase()) !== -1

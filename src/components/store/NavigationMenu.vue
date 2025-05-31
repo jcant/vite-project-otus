@@ -1,9 +1,17 @@
 <script setup>
-import { appRoutes } from "@/router";
-import { useRouter } from "vue-router";
 import { ROUTE_NAMES } from "@/router/router_names.js";
+import { useUserStore } from "@/states/UserState";
+import { useRouter } from "vue-router";
+import { storeToRefs } from "pinia";
 
+const userStore = useUserStore();
+const { isAuthorized } = storeToRefs(userStore);
 const router = useRouter();
+
+function signout() {
+  userStore.logout();
+  router.push({ name: ROUTE_NAMES.HOME });
+}
 </script>
 
 <template>
@@ -11,9 +19,16 @@ const router = useRouter();
     <router-link :to="{ name: ROUTE_NAMES.HOME }">Catalog</router-link>
   </div>
   <div class="nav-element">
-    <router-link :to="{ name: ROUTE_NAMES.ABOUT }">About</router-link>
+    <router-link :to="{ name: ROUTE_NAMES.CART }">Cart </router-link>
   </div>
   <div class="nav-element">
+    <router-link :to="{ name: ROUTE_NAMES.ABOUT }">About</router-link>
+  </div>
+  <div v-if="!isAuthorized" class="nav-element">
+    <router-link :to="{ name: ROUTE_NAMES.SIGN_IN }">Sign In</router-link>
+  </div>
+  <div v-else class="nav-element" @click="signout">Sign Out</div>
+  <div v-if="isAuthorized" class="nav-element accent">
     <router-link :to="{ name: ROUTE_NAMES.PRODUCT_ADD }"
       >New product
     </router-link>
@@ -25,10 +40,15 @@ const router = useRouter();
   display: inline;
   padding: 2px;
   margin: 4px;
-  background: rgb(207, 255, 184);
-  border: 1px solid green;
+  cursor: pointer;
 }
+
+.accent {
+  color: rgb(176, 6, 6);
+}
+
 .router-link-active {
-  background: rgb(244, 166, 30);
+  font-weight: 800;
+  text-shadow: 2px 2px 2px rgb(79, 79, 79);
 }
 </style>

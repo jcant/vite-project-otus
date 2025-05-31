@@ -2,9 +2,11 @@
 import { ref, onBeforeMount } from "vue";
 import { useRoute } from "vue-router";
 import axios from "axios";
+import { useCartStore } from "@/states/CartState";
 
 const product = ref(null);
 const route = useRoute();
+const cartStore = useCartStore();
 
 onBeforeMount(() => prepareProductsData());
 
@@ -14,6 +16,10 @@ function prepareProductsData() {
     .then((response) => {
       product.value = response.data;
     });
+}
+
+function addToCart() {
+  cartStore.addToCart(product.value);
 }
 </script>
 
@@ -48,13 +54,13 @@ function prepareProductsData() {
       <span>Rate: {{ product?.rating.rate }}</span
       ><span> Count: {{ product?.rating.count }}</span>
     </div>
-    <router-link :to="'/checkout/' + product?.id">
-      <button
-        class="text-3xl bg-amber-500 pl-3 pr-3 p-1 m-2 rounded-md border-1 border-amber-700 cursor-pointer"
-      >
-        CHECK OUT
-      </button>
-    </router-link>
+
+    <button
+      @click="addToCart"
+      class="text-2xl bg-amber-500 pl-3 pr-3 m-2 rounded-md border-1 border-amber-700 cursor-pointer"
+    >
+      ADD TO CART
+    </button>
   </div>
   <router-view></router-view>
 </template>

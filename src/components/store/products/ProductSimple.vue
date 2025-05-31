@@ -1,8 +1,4 @@
 <script setup>
-import { useRoute } from "vue-router";
-import { ROUTE_NAMES } from "@/router/router_names.js";
-
-const route = useRoute();
 const props = defineProps(["product"]);
 </script>
 
@@ -10,8 +6,10 @@ const props = defineProps(["product"]);
   <router-link :to="'/product/' + product.id">
     <div class="shadow-xl m-6 text-center items-center">
       <div class="product-simple">
+        {{ product.title }}
+
         <img
-          class="h-26 w-26 object-contain m-auto"
+          class="h-40 w-40 object-contain m-auto"
           :src="product?.image"
           alt="product photo"
         />
@@ -31,6 +29,7 @@ const props = defineProps(["product"]);
   white-space: nowrap;
   text-overflow: ellipsis;
   border: 1px solid rgb(255, 255, 255);
+  width: 200px;
 }
 
 .product-simple:hover {
@@ -39,5 +38,10 @@ const props = defineProps(["product"]);
 
 .product-simple-selected {
   border: 1px solid rgb(190, 190, 190);
+}
+
+.product-name {
+  text-overflow: ellipsis;
+  width: 20px;
 }
 </style>
