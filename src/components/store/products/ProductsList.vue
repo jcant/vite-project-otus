@@ -3,8 +3,8 @@ import ProductSimple from "@/components/store/products/ProductSimple.vue";
 import { onBeforeMount, ref } from "vue";
 import { useFilterStore } from "@/states/FilterState.js";
 import { storeToRefs } from "pinia";
-// import { getProductsJSON } from "@/components/data/products_local.js"
-import axios from "axios";
+import { getProductsJSON } from "@/components/data/products_local.js"
+// import axios from "axios";
 
 const props = defineProps(["title"]);
 
@@ -16,20 +16,23 @@ const filteredProducts = ref(null);
 
 onBeforeMount(() => prepareProductsData());
 
+// function prepareProductsData() {
+//   axios.get("https://fakestoreapi.com/products").then((response) => {
+//     allProducts.value = response.data;
+//     filteredProducts.value = response.data;
+//     if (isFiltered.value) {
+//       filterProducts(filter.value);
+//     }
+//   });
+// }
+
 function prepareProductsData() {
-  axios.get("https://fakestoreapi.com/products").then((response) => {
-    allProducts.value = response.data;
-    filteredProducts.value = response.data;
-    if (isFiltered.value) {
+  allProducts.value = getProductsJSON();
+  filteredProducts.value = getProductsJSON();
+  if (isFiltered.value) {
       filterProducts(filter.value);
     }
-  });
 }
-
-// function prepareProductsData() {
-//   allProducts.value = getProductsJSON();
-//   filteredProducts.value = getProductsJSON();
-// }
 
 filterStore.$subscribe((mutation, state) => {
   if (isFiltered.value) {

@@ -1,7 +1,8 @@
 <script setup>
 import { ref, onBeforeMount } from "vue";
 import { useRoute } from "vue-router";
-import axios from "axios";
+// import axios from "axios";
+import { getProductById } from "@/components/data/products_local.js"
 import { useCartStore } from "@/states/CartState";
 
 const product = ref(null);
@@ -10,12 +11,16 @@ const cartStore = useCartStore();
 
 onBeforeMount(() => prepareProductsData());
 
+// function prepareProductsData() {
+//   axios
+//     .get(`https://fakestoreapi.com/products/${route.params.id}`)
+//     .then((response) => {
+//       product.value = response.data;
+//     });
+// }
+
 function prepareProductsData() {
-  axios
-    .get(`https://fakestoreapi.com/products/${route.params.id}`)
-    .then((response) => {
-      product.value = response.data;
-    });
+  product.value = getProductById(route.params.id);
 }
 
 function addToCart() {
