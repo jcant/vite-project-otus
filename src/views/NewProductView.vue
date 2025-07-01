@@ -9,7 +9,7 @@ const router = useRouter();
 const schema = yup.object({
   title: yup.string().required(),
   price: yup.number().required(),
-  decription: yup.string().required(),
+  description: yup.string().required(),
   category: yup.string().required(),
   image: yup.string().required(),
   ratingRate: yup.number().required(),
@@ -22,7 +22,7 @@ const { errors, meta, defineField } = useForm({
 
 const [title, titleAttrs] = defineField("title");
 const [price, priceAttrs] = defineField("price");
-const [decription, decriptionAttrs] = defineField("decription");
+const [description, descriptionAttrs] = defineField("description");
 const [category, categoryAttrs] = defineField("category");
 const [image, imageAttrs] = defineField("image");
 const [ratingRate, ratingRateAttrs] = defineField("ratingRate");
@@ -59,13 +59,13 @@ function Cancel() {
         v-model="price"
         v-bind="priceAttrs"
       />
-      <label>Decription</label>
+      <label>Description</label>
       <input
         class="order-input"
-        :class="{ 'order-input-error': errors.decription }"
+        :class="{ 'order-input-error': errors.description }"
         type="text"
-        v-model="decription"
-        v-bind="decriptionAttrs"
+        v-model="description"
+        v-bind="descriptionAttrs"
       />
       <label>Category</label>
       <input

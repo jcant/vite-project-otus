@@ -53,7 +53,7 @@ function addToCart() {
     </div>
 
     <div>
-      <span>Categoty: </span><span>{{ product?.category }}</span>
+      <span>Category: </span><span>{{ product?.category }}</span>
     </div>
     <div>
       <span>Rate: {{ product?.rating.rate }}</span
