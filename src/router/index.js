@@ -1,12 +1,12 @@
 import { ROUTE_NAMES } from "@/router/router_names";
 import { createWebHistory, createRouter } from "vue-router";
-import StoreMainPage from "@/views/StoreMainPage.vue";
+import StoreMainView from "@/views/StoreMainView.vue";
 
 export const appRoutes = [
   {
     path: "/",
     name: ROUTE_NAMES.HOME,
-    component: StoreMainPage,
+    component: StoreMainView,
   },
   {
     path: "/product/:id",
@@ -27,7 +27,7 @@ export const appRoutes = [
             path: "success",
             name: ROUTE_NAMES.CHECKOUT_SUCCESS,
             component: () =>
-              import("@/components/store/order/OrderSuccessed.vue"),
+              import("@/components/store/order/OrderSucceeded.vue"),
           },
           {
             path: "cancel",

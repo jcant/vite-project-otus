@@ -16,7 +16,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="text-5xl m-10">ORDER SUCCESSED!!</div>
+  <div class="text-5xl m-10">ORDER SUCCEEDED!!</div>
 </template>
 
 <style scoped></style>
