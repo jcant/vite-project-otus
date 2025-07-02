@@ -29,6 +29,7 @@ function clearFilter() {
         filter
       }}</span
       ><img
+        data-testid="clear-filter"
         src="@/assets/close.png"
         class="w-4 h-4 ml-1"
         @click="clearFilter"

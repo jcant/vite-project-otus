@@ -8,6 +8,7 @@ const inputValue = defineModel("inputValue");
     <label>{{ label }}</label>
     <div class="flex place-items-center cursor-pointer">
       <input
+        data-testid="filter-input"
         type="text"
         class="border border-amber-800 rounded-2xl pl-2 pr-2 p-1"
         v-model.lazy.trim="inputValue"

@@ -1,0 +1,10 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Product filter component > renders all 1`] = `
+"<div>
+  <div><label>Search by price or by title</label>
+    <div class="flex place-items-center cursor-pointer"><input data-testid="filter-input" type="text" class="border border-amber-800 rounded-2xl pl-2 pr-2 p-1"><img src="/src/assets/search.png" class="w-6 h-6 ml-2"></div>
+  </div>
+  <!--v-if-->
+</div>"
+`;
