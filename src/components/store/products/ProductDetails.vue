@@ -1,25 +1,32 @@
 <script setup>
 import { ref, onBeforeMount } from "vue";
 import { useRoute } from "vue-router";
-// import axios from "axios";
-import { getProductById } from "@/components/data/products_local.js"
+import axios from "axios";
+import { getProductById } from "@/components/data/products_local.js";
 import { useCartStore } from "@/states/CartState";
+import { APP_CONFIG } from "@/constants";
 
 const product = ref(null);
 const route = useRoute();
 const cartStore = useCartStore();
 
-onBeforeMount(() => prepareProductsData());
+onBeforeMount(() => {
+  if (APP_CONFIG.local_data_mode) {
+    getLocalProductsData();
+  } else {
+    getProductsData();
+  }
+});
 
-// function prepareProductsData() {
-//   axios
-//     .get(`https://fakestoreapi.com/products/${route.params.id}`)
-//     .then((response) => {
-//       product.value = response.data;
-//     });
-// }
+function getProductsData() {
+  axios
+    .get(`${APP_CONFIG.remote_products_url}/products/${route.params.id}`)
+    .then((response) => {
+      product.value = response.data;
+    });
+}
 
-function prepareProductsData() {
+function getLocalProductsData() {
   product.value = getProductById(route.params.id);
 }
 
@@ -61,6 +68,7 @@ function addToCart() {
     </div>
 
     <button
+      data-testid="add-to-cart-button"
       @click="addToCart"
       class="text-2xl bg-amber-500 pl-3 pr-3 m-2 rounded-md border-1 border-amber-700 cursor-pointer"
     >
