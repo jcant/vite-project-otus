@@ -1,8 +1,8 @@
 <script setup>
 import { ref, onBeforeMount } from "vue";
 import { useRoute } from "vue-router";
-import axios from "axios";
-import { getProductById } from "@/components/data/products_local.js";
+import { getProductData } from "@/components/data/api.js";
+import { getProductLocal } from "@/components/data/products_local.js";
 import { useCartStore } from "@/states/CartState";
 import { APP_CONFIG } from "@/constants";
 
@@ -10,25 +10,13 @@ const product = ref(null);
 const route = useRoute();
 const cartStore = useCartStore();
 
-onBeforeMount(() => {
+onBeforeMount(async () => {
   if (APP_CONFIG.local_data_mode) {
-    getLocalProductsData();
+    product.value = getProductLocal(route.params.id);
   } else {
-    getProductsData();
+    product.value = await getProductData(route.params.id);
   }
 });
-
-function getProductsData() {
-  axios
-    .get(`${APP_CONFIG.remote_products_url}/products/${route.params.id}`)
-    .then((response) => {
-      product.value = response.data;
-    });
-}
-
-function getLocalProductsData() {
-  product.value = getProductById(route.params.id);
-}
 
 function addToCart() {
   cartStore.addToCart(product.value);
