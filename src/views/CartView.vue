@@ -20,11 +20,15 @@ function clearCart() {
   <div v-for="item in cart">
     <ProductInCart :product="item.product" :count="item.count" />
   </div>
-  <div v-if="count > 0" class="text-4xl ml-12 mt-10">
+  <div v-if="count > 0" class="text-4xl ml-12 mt-10" data-testid="total-price">
     Total: {{ totalPrice }}
   </div>
   <div v-if="count > 0" class="ml-12 mt-10">
-    <button class="cart-button button-simple" @click="clearCart">
+    <button
+      class="cart-button button-simple"
+      @click="clearCart"
+      data-testid="clear-cart-button"
+    >
       CLEAR CART
     </button>
   </div>

@@ -18,9 +18,23 @@ function remove() {
   <div class="grid grid-cols-[20%_20%_50%_10%] items-center mb-6 mr-10">
     <img :src="product.image" class="w-20 h-20 object-contain ml-10" />
     <div class="flex flex-row items-center">
-      <span @click="incCount" class="text-3xl mr-1 ml-1 cursor-pointer">+</span>
-      <span class="ml-2 mr-2 text-4xl">{{ count }}</span>
-      <span @click="decCount" class="text-3xl ml-1 mr-1 cursor-pointer">-</span>
+      <span
+        @click="incCount"
+        class="text-3xl mr-1 ml-1 cursor-pointer"
+        :data-testid="'incValue' + product.id"
+        >+</span
+      >
+      <span
+        class="ml-2 mr-2 text-4xl"
+        :data-testid="'product-count-' + product.id"
+        >{{ count }}</span
+      >
+      <span
+        @click="decCount"
+        class="text-3xl ml-1 mr-1 cursor-pointer"
+        :data-testid="'decValue' + product.id"
+        >-</span
+      >
       <span @click="remove" class="ml-4 cursor-pointer"
         ><img class="w-4 h-4" src="@/assets/close.png"
       /></span>

@@ -1,0 +1,44 @@
+// @ts-check
+import { test, expect } from "@playwright/test";
+
+test("Products operations", async ({ page }) => {
+  //Open main page
+  await page.goto("/");
+  await expect(page).toHaveTitle(/Jcant/);
+
+  //Open product id=1
+  await page.goto("/product/1");
+  await page.getByTestId("add-to-cart-button").click();
+
+  // await expect(page.getByTestId("cart-count")).toHaveText("1");
+
+  //Open product id=2
+  await page.goto("/product/2");
+  await page.getByTestId("add-to-cart-button").click();
+
+  // await expect(page.getByTestId("cart-count")).toHaveText("2");
+
+  //Open Cart
+  await page.goto("/cart");
+  // await expect(page.getByTestId("total-price")).toBeVisible();
+
+  //Increase product id=1 amount
+  await page.getByTestId("incValue1").click();
+  await expect(page.getByTestId("product-count-1")).toHaveText("2");
+  // await expect(page.getByTestId("cart-count")).toHaveText("3");
+
+  //Increase product id=2 amount
+  await page.getByTestId("incValue2").click();
+  await page.getByTestId("incValue2").click();
+  await expect(page.getByTestId("product-count-2")).toHaveText("3");
+  // await expect(page.getByTestId("cart-count")).toHaveText("5");
+
+  //Decrease product id=2 amount
+  await page.getByTestId("decValue2").click();
+  await expect(page.getByTestId("product-count-2")).toHaveText("2");
+  // await expect(page.getByTestId("cart-count")).toHaveText("4");
+
+  //Clear cart
+  await page.getByTestId("clear-cart-button").click();
+  await expect(page.getByTestId("cart-count")).not.toBeVisible();
+});
