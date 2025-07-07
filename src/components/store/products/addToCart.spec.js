@@ -1,13 +1,13 @@
 import { describe, it, expect, beforeAll, vi } from "vitest";
-import { shallowMount, flushPromises } from "@vue/test-utils";
+import { shallowMount } from "@vue/test-utils";
 import { setActivePinia, createPinia, storeToRefs } from "pinia";
 import { useCartStore } from "@/states/CartState";
 import ProductDetails from "./ProductDetails.vue";
 
 import { createRouter, createWebHistory } from "vue-router";
 import { appRoutes } from "@/router";
-import axios from "axios";
-import { getProductById } from "@/components/data/products_local";
+import { getProductLocal } from "@/components/data/products_local";
+import { getProductData } from "@/components/data/api.js";
 
 describe("Add to cart", async () => {
   let wrapper;
@@ -21,17 +21,13 @@ describe("Add to cart", async () => {
     router.push("/product/1");
     await router.isReady();
 
-    vi.mock("axios", () => {
+    vi.mock("@/components/data/api.js", () => {
       return {
-        default: {
-          get: vi.fn(),
-        },
+        getProductData: vi.fn(),
       };
     });
 
-    const responseGet = getProductById(1);
-
-    axios.get.mockResolvedValue(responseGet);
+    getProductData.mockResolvedValue(getProductLocal(1));
 
     setActivePinia(createPinia());
 
@@ -43,11 +39,9 @@ describe("Add to cart", async () => {
   });
 
   it("click on add button", async () => {
-    await flushPromises();
-
     const button = wrapper.find('[data-testid="add-to-cart-button"]');
     expect(button.exists()).toBe(true);
-    // expect(axios.get).toHaveBeenCalledTimes(1);
+    expect(getProductData).toHaveBeenCalledTimes(1);
 
     button.trigger("click");
     button.trigger("click");
@@ -58,7 +52,7 @@ describe("Add to cart", async () => {
   });
 
   afterEach(() => {
-    axios.get.mockReset();
+    getProductData.mockReset();
     wrapper.unmount();
   });
 });
