@@ -3,7 +3,10 @@ const props = defineProps(["product"]);
 </script>
 
 <template>
-  <router-link :to="'/product/' + product.id">
+  <router-link
+    :to="'/product/' + product.id"
+    :data-testid="'link-to-product-' + product.id"
+  >
     <div class="shadow-xl m-6 text-center items-center">
       <div class="product-simple">
         {{ product.title }}

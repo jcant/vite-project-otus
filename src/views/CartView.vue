@@ -13,8 +13,17 @@ function clearCart() {
 </script>
 
 <template>
-  <div class="p-2 m-1 font-bold bg-amber-300 text-center mb-4">Cart view</div>
-  <div v-if="count == 0" class="p-2 mt-10 font-bold text-center">
+  <div
+    class="p-2 m-1 font-bold bg-amber-300 text-center mb-4"
+    data-testid="page-title"
+  >
+    Cart view
+  </div>
+  <div
+    v-if="count == 0"
+    class="p-2 mt-10 font-bold text-center"
+    data-testid="empty-cart-message"
+  >
     Please select products
   </div>
   <div v-for="item in cart">

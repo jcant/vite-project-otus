@@ -49,7 +49,12 @@ function clearFilter() {
 </script>
 
 <template>
-  <div class="p-2 m-1 font-bold bg-amber-300 text-center">{{ title }}</div>
+  <div
+    class="p-2 m-1 font-bold bg-amber-300 text-center"
+    data-testid="page-title"
+  >
+    {{ title }}
+  </div>
   <div class="flex flex-wrap">
     <ProductSimple
       v-for="product in filteredProducts"

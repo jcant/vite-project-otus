@@ -7,6 +7,7 @@ import { useCartStore } from "@/states/CartState";
 import { APP_CONFIG } from "@/constants";
 
 const product = ref(null);
+const isProductLoaded = ref(false);
 const route = useRoute();
 const cartStore = useCartStore();
 
@@ -16,6 +17,7 @@ onBeforeMount(async () => {
   } else {
     product.value = await getProductData(route.params.id);
   }
+  isProductLoaded.value = true;
 });
 
 function addToCart() {
@@ -25,7 +27,11 @@ function addToCart() {
 
 <template>
   <div>
-    <div class="p-2 m-1 font-bold bg-amber-300 text-center">
+    <div
+      class="p-2 m-1 font-bold bg-amber-300 text-center"
+      data-testid="page-title"
+    >
+      Category:
       {{ product?.category }}
     </div>
     <div class="m-4">
@@ -56,6 +62,7 @@ function addToCart() {
     </div>
 
     <button
+      v-show="isProductLoaded"
       data-testid="add-to-cart-button"
       @click="addToCart"
       class="text-2xl bg-amber-500 pl-3 pr-3 m-2 rounded-md border-1 border-amber-700 cursor-pointer"

@@ -20,7 +20,12 @@ const { count } = storeToRefs(cartStore);
       <router-link :to="{ name: ROUTE_NAMES.CART }">
         <img class="h-6 w-6 mr-3" src="@/assets/cart.png" />
       </router-link>
-      <span v-if="count != 0" data-testid="cart-count">{{ count }}</span>
+      <span
+        v-show="count != 0"
+        data-testid="cart-count"
+        class="data-test-class"
+        >{{ count }}</span
+      >
     </div>
   </div>
 </template>
